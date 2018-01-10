@@ -22,6 +22,9 @@
 
 
 import React from 'react'
+// 按需加载antd-mobile组件
+import {Button,List} from 'antd-mobile'
+import 'antd-mobile/dist/antd-mobile.css'
 
 class App extends React.Component {
     render() {
@@ -47,11 +50,13 @@ class One extends React.Component {
             soliders: ['小虎', '小柱', '王根生']
         }
         //  1 在构造函数中 bind  this
-        //  this.addSolider = this.addSolider.bind(this)
+          this.addSolider = this.addSolider.bind(this)
     }
 
     addSolider() {
-        console.log(this)
+        this.setState({
+            soliders:[...this.state.soliders,'新兵蛋子'+Math.random()]
+        })
     }
     //  3 直接用箭头函数生命
     // addSolider = (() => {
@@ -64,14 +69,23 @@ class One extends React.Component {
         return (
             <div>
                 <h2>一营营长是{this.props.lao}</h2>
-                <button onClick={this.addSolider}>新兵入伍，抓壮丁</button>
+                <Button type='primary' onClick={this.addSolider}>新兵入伍，抓壮丁</Button>
                 {/*  2 直接用箭头函数绑定 */}
                 {/*<button onClick={()=>this.addSolider()}>新兵入伍，抓壮丁</button>*/}
-                <ul>
+                <List
+                    renderHeader={()=>'士兵列表'}
+                >
                     {this.state.soliders.map((v) => {
-                        return <li key={v}>{v}</li>
+                        return <List.Item key={v} arrow='horizontal'>
+                            {v}
+                            </List.Item>
                     })}
-                </ul>
+                </List>
+                {/*<ul>*/}
+                    {/*{this.state.soliders.map((v) => {*/}
+                        {/*return <li key={v}>{v}</li>*/}
+                    {/*})}*/}
+                {/*</ul>*/}
             </div>
         )
     }
