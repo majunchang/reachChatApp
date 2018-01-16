@@ -26,7 +26,8 @@ class App extends React.Component {
 
 // App需要的属性
 const marStateToProps = (state) => {
-    return {num: state}
+    console.log(state);
+    return {num: state.counter}
 }
 // App需要的方法的集合
 const actionCreators = {plusGunF, minusGunF, addGunAsync}

@@ -12,7 +12,7 @@ export function authReducer(state = {isAuth: false, user: '李云龙'}, action) 
     }
 }
 
-// action
+// reducers  两个状态
 export function login() {
     return {type: LOGIN}
 }
