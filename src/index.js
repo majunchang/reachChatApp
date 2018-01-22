@@ -8,12 +8,15 @@ import {Provider} from 'react-redux'
 //  因为涉及到了多个recucers  我们进行了合并 并且返回这样
 import reducers from './reducers'
 
+
+
 // 引入react-router组件
 import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
 // 引入页面组件 】
 import Auth from './Auth'
 import Dashboard from './Dashboard'
-
+import './config'
+import 'antd-mobile/dist/antd-mobile.css';
 
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
