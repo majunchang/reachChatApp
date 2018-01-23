@@ -9,11 +9,7 @@ axios.interceptors.request.use(function (config) {
 })
 
 axios.interceptors.response.use(function (config) {
-    var timer = null;
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-        Toast.hide()
-    },500)
+    Toast.hide()
     return config;
 })
 

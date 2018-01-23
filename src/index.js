@@ -9,21 +9,17 @@ import {Provider} from 'react-redux'
 import reducers from './reducers'
 
 
-
 // 引入react-router组件
 import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
 // 引入页面组件 】
-import Auth from './Auth'
-import Dashboard from './Dashboard'
-import './config'
-import 'antd-mobile/dist/antd-mobile.css';
+import Login from './pages/login/login'
+import Register from './pages/register/register'
+
 
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
-// console.log(store);
-// console.log(store.getState());
 
 
 ReactDOM.render(
@@ -33,9 +29,8 @@ ReactDOM.render(
                 {/*Switch的作用  只渲染命中的第一个路由*/}
                 <Switch>
                     {/*router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
-                    <Route path='/auth' component={Auth} exact></Route>
-                    <Route path='/dashboard' component={Dashboard}></Route>
-                    <Redirect to='/dashboard'></Redirect>
+                    <Route path='/login' component={Login} exact></Route>
+                    <Route path='/register' component={Register}></Route>
                 </Switch>
             </BrowserRouter>
         </Provider>
