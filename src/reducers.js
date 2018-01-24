@@ -2,9 +2,5 @@
 
 import {combineReducers} from 'redux'
 
-import {counter} from './actions'
-import {authReducer} from './AuthRedux'
 
-
-
-export default combineReducers({counter, authReducer})
+export default combineReducers({})
