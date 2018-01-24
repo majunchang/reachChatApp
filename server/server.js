@@ -43,6 +43,6 @@ app.get('/data', (req, res) => {
 })
 
 
-app.listen(9000,()=>{
+app.listen(9000, () => {
     console.log('数据库服务已经成功启动，监听的端口号是9000');
 })
