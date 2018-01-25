@@ -99,8 +99,7 @@
       [
         "import",
         {
-          "libraryName": "antd",
-          "libraryDirectory": "es",
+          "libraryName": "antd-mobile",
           "style": "css"
         }
       ]
