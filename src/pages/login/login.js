@@ -3,6 +3,7 @@ import Logo from '../../component/logo/logo'
 import {List, WingBlank, WhiteSpace, Button, InputItem} from 'antd-mobile'
 
 
+
 class Login extends React.Component {
     constructor(props) {
         super(props)
