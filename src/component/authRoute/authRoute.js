@@ -1,12 +1,33 @@
 import React from 'react'
 import axios from 'axios'
+import {withRouter} from 'react-router-dom'
 
-class AuthRoute extends React.Component{
-    componentDidMount(){
+@withRouter
 
+class AuthRoute extends React.Component {
+    componentDidMount() {
+        axios.get('user/info')
+            .then((res) => {
+                console.log(res);
+                console.log(this.props);
+                if (res.data.code == 0) {
+
+                } else {
+
+                }
+            })
     }
 
-    render(){
+    render() {
         return <p>我是用来打酱油的</p>
     }
 }
+
+export default AuthRoute
+
+/*
+  这个AuthRoute组件   并不是一个路由组件 直接获取this.props是一个空对象
+
+   为了我们能够在这个组件的方法中 控制路由的跳转    react-router-dom  提供了一个WithRouter的api  让我们可以获取到路由元信息
+ */
+
