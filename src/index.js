@@ -23,6 +23,10 @@ const store = createStore(reducers, compose(
 ));
 
 
+function Boss() {
+    return <h2>我是Boss页面</h2>
+}
+
 ReactDOM.render(
     (
         <Provider store={store}>
@@ -33,6 +37,7 @@ ReactDOM.render(
 
                     <Switch>
                         {/*router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
+                        <Route path='/boss' component={Boss}></Route>
                         <Route path='/login' component={Login} exact></Route>
                         <Route path='/register' component={Register}></Route>
                     </Switch>
