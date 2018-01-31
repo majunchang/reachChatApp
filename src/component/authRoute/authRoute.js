@@ -19,7 +19,7 @@ class AuthRoute extends React.Component {
     }
 
     render() {
-        return <p>我是用来打酱油的</p>
+        return null
     }
 }
 

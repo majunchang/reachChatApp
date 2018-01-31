@@ -9,21 +9,33 @@
 </body>
 </html>
 <script>
-    function test(key, val) {
-        var obj = {
-            [key]: val
-        }
-        console.log(obj);
-    }
+    // function test(key, val) {
+    //     var obj = {
+    //         [key]: val
+    //     }
+    //     console.log(obj);
+    // }
+    //
+    // test('user', 15)
+    //
+    //
+    // var foo = true;
+    // var key = 'foo';
+    // var obj = {
+    //     [key]:'123'
+    // }
+    // console.log(obj);
 
-    test('user', 15)
-
-
-    var foo = true;
-    var key = 'foo';
     var obj = {
-        [key]:'123'
+        name: 'xiaomig',
+        'age': 19
     }
-    console.log(obj);
+    // console.log(obj);
+    fn(obj);
+
+    function fn({name, age}) {
+        console.log(name);
+        console.log(age);
+    }
 
 </script>

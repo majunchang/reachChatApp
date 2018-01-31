@@ -16,6 +16,9 @@ import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
 import Login from './pages/login/login'
 import Register from './pages/register/register'
 
+import './config'
+import './index.css'
+
 
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
