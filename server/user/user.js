@@ -8,7 +8,7 @@ const utils = require('utility');
 const error_code = 500;
 const success_code = 0;
 
-const filter = {'pwd': 0, '_v': 0}
+const filter = {'pwd': 0, '__v': 0}
 
 
 //  有时候当用户设置了比较简单的密码的时候  容易被破解 所以我们使用加盐操作
@@ -53,24 +53,30 @@ Router.post('/register', (req, res) => {
                 msg: '用户名已经注册过，请直接登录'
             })
         }
-        console.log('111');
-        User.create({user, pwd: md5Salt(pwd), type}, (e, d) => {
-            if (e) {
+        //  使用 User.create的方式  无法获取到_id  信息  所以我们改为 save的方式
+        const userModel = new User({user, type, pwd: md5Salt(pwd)});
+        userModel.save()
+            .then((e, d) => {
+                if (e) {
+                    return res.json({
+                        code: error_code,
+                        msg: '添加用户失败'
+                    })
+                }
+                //  获取相关信息
+                const {user, type, _id} = d;
+                res.cookie('userId', _id)
                 return res.json({
-                    code: error_code,
-                    msg: '添加用户失败'
+                    code: success_code,
+                    data: {user, type, _id}
                 })
-            }
-            return res.json({
-                code: success_code
             })
-        })
     })
 })
 
 Router.post('/login', (req, res) => {
     const {user, pwd} = req.body;
-    User.find({user, pwd}, filter, (err, doc) => {
+    User.findOne({user, pwd: md5Salt(pwd)}, filter, (err, doc) => {
             if (err) {
                 console.log(err);
                 return res.json({
@@ -78,6 +84,8 @@ Router.post('/login', (req, res) => {
                     msg: '服务器正在维护'
                 })
             }
+            // console.log(doc);
+            res.cookie('userId', doc._id)
             return res.json({code: success_code, data: doc})
         }
     )
@@ -85,9 +93,28 @@ Router.post('/login', (req, res) => {
 
 
 Router.get('/info', (req, res) => {
-    return res.json({
-        code: 0,
-        num: 1
+    //  获取用户传输的cookie
+    const {userId} = req.cookies;
+    if (!userId) {
+        return res.json({
+            code: 1,
+            msg: '登录已经失效'
+        })
+    }
+    User.findOne({_id: userId}, filter, (err, doc) => {
+        if (err) {
+            return res.json({
+                code: error_code,
+                msg: '服务器正在维护之中'
+            })
+        }
+        if (doc) {
+            return res.json({
+                code: 0,
+                data: doc
+            })
+        }
+
     })
 })
 

@@ -3,6 +3,7 @@ import {getRedirectPath} from '../utils'
 
 const register_success = 'register_success'
 const error_msg = 'error_msg'
+const load_data = 'load_data'
 const login_success = 'login_success'
 
 
@@ -23,24 +24,31 @@ export function user(state = initState, action) {
             return {...state, isAuth: false, msg: action.msg}
         case login_success:
             return {...state, isAuth: true, redirectTo: getRedirectPath(action), ...action.payload}
+        case load_data:
+            return {...state, ...action.payload}
         default:
             return state
     }
-
 }
 
 //  actions
-export function registerSuccess(obj) {
+function registerSuccess(obj) {
     return {type: register_success, payload: obj}
 }
 
-export function errorMsg(msg) {
+function errorMsg(msg) {
     return {msg, type: error_msg}
 }
 
-export function loginSuccess(obj) {
+function loginSuccess(obj) {
     return {type: login_success, payload: obj}
 }
+
+export  function loadData(userInfo) {
+    console.log(userInfo);
+    return {type: load_data, payload: userInfo}
+}
+
 
 export function login({user, pwd}) {
     if (!user || !pwd) {
@@ -60,6 +68,7 @@ export function login({user, pwd}) {
 }
 
 export function register({user, pwd, repeatPwd, type}) {
+
     if (!user || !pwd) {
         return errorMsg('用户名密码必须输入')
     }

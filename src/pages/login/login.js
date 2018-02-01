@@ -3,6 +3,7 @@ import Logo from '../../component/logo/logo'
 import {List, WingBlank, WhiteSpace, Button, InputItem} from 'antd-mobile'
 import {connect} from 'react-redux'
 import {login} from '../../redux/userRedux'
+import {Redirect} from 'react-router-dom'
 
 @connect(
     state => state.user,
@@ -19,7 +20,7 @@ class Login extends React.Component {
             pwd: ''
         }
         this.register = this.register.bind(this);
-        this.login = this.login.bind(this);
+        this.handlelogin = this.handlelogin.bind(this);
     }
 
     handdleChange(k, v) {
@@ -33,11 +34,15 @@ class Login extends React.Component {
         this.props.history.push('/register');
     }
 
+    handlelogin() {
+        this.props.login(this.state)
+    }
+
     render() {
         return (
             <div>
+                {this.props.redirectTo ? <Redirect to={this.props.redirectTo}></Redirect> : null}
                 <Logo></Logo>
-                <h2>我是登录页面</h2>
                 <WingBlank>
                     <List>
                         <InputItem onChange={v => this.handdleChange('user', v)}>用户</InputItem>
@@ -46,7 +51,7 @@ class Login extends React.Component {
                         >密码</InputItem>
                     </List>
                     <WhiteSpace></WhiteSpace>
-                    <Button type='primary' onClick={this.login}>登录</Button>
+                    <Button type='primary' onClick={this.handlelogin}>登录</Button>
                     <WhiteSpace></WhiteSpace>
                     <Button type='primary' onClick={this.register}>注册</Button>
                 </WingBlank>

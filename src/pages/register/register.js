@@ -6,10 +6,24 @@ import {Redirect} from 'react-router-dom'
 import {register} from "../../redux/userRedux";
 
 
+// @connect(
+//     //  传入的参数 是 reducer里面的state  也就是初始化或者改变后的状态  箭头函数的函数体中的对象 的key代表的props里面的key值
+//     (state) =>
+//         ({
+//             'test': state.user
+//         })
+//     ,
+//     {register}
+// )
 @connect(
-    state => state.user,
+    /*
+      传入的参数 是 redux里面的state  也就是初始化或者改变后的状态  箭头函数的函数体中的对象 的key代表的props里面的key值
+      如果不传key值  将reducer里面的initstate 遍历 然后添加到props中
+       */
+    (state) => state.user,
     {register}
 )
+
 
 class Register extends React.Component {
     constructor(props) {
@@ -20,11 +34,23 @@ class Register extends React.Component {
             pwd: '',
             repeatPwd: ''
         }
+        // console.log('liuyifei');
+        // console.log(this.state);
+        // console.log(this.props);
         this.handleRegister = this.handleRegister.bind(this);
+
     }
 
     handleRegister() {
+        // console.log('李一桐');
+        // console.log(this.state);
+        // console.log(this.props);
         this.props.register(this.state);
+        // setTimeout(() => {
+        //     console.log('杨幂');
+        //     console.log(this.props);
+        // }, 1000)
+
     }
 
     handleChange(key, val) {
@@ -38,6 +64,8 @@ class Register extends React.Component {
 
         return (
             <div>
+                {/*<h1>{this.props.state}</h1>*/}
+                {/*<h1>{this.props.test}</h1>*/}
                 {this.props.redirectTo ? <Redirect to={this.props.redirectTo}></Redirect> : null}
                 <Logo></Logo>
                 <h2>我是注册页面</h2>
