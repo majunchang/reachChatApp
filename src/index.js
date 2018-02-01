@@ -15,6 +15,7 @@ import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
 // 引入页面组件 】
 import Login from './pages/login/login'
 import Register from './pages/register/register'
+import BossInfo from './pages/BossInfo/BossInfo'
 
 import './config'
 import './index.css'
@@ -43,6 +44,7 @@ ReactDOM.render(
                         <Route path='/boss' component={Boss}></Route>
                         <Route path='/login' component={Login} exact></Route>
                         <Route path='/register' component={Register}></Route>
+                        <Route path='/bossinfo' component={BossInfo}></Route>
                     </Switch>
 
                 </div>
