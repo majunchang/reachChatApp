@@ -15,9 +15,6 @@ class AuthRoute extends React.Component {
     componentDidMount() {
         axios.get('user/info')
             .then((res) => {
-                console.log('李一桐');
-                console.log(res);
-                console.log(this.props);
                 if (res.data.code == 0) {
                     this.props.loadData(res.data.data)
                 } else {

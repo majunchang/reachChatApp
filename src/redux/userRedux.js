@@ -2,9 +2,10 @@ import axios from 'axios'
 import {getRedirectPath} from '../utils'
 
 const register_success = 'register_success'
+const login_success = 'login_success'
+const auth_success = 'auth_success'
 const error_msg = 'error_msg'
 const load_data = 'load_data'
-const login_success = 'login_success'
 
 
 const initState = {
@@ -19,9 +20,11 @@ const initState = {
 export function user(state = initState, action) {
     switch (action.type) {
         case register_success:
-            return {...state, msg: '', isAuth: true, redirectTo: getRedirectPath(action), ...action.payload}
+            return {...state, msg: '', isAuth: true, redirectTo: getRedirectPath(action.payload), ...action.payload}
         case error_msg:
             return {...state, isAuth: false, msg: action.msg}
+        case auth_success:
+            return {...state, redirectTo: getRedirectPath(action.payload), ...action.payload}
         case login_success:
             return {...state, isAuth: true, redirectTo: getRedirectPath(action), ...action.payload}
         case load_data:
@@ -44,11 +47,27 @@ function loginSuccess(obj) {
     return {type: login_success, payload: obj}
 }
 
-export  function loadData(userInfo) {
+function authSuccess(obj) {
+    return {type: auth_success, payload: obj}
+}
+
+export function loadData(userInfo) {
     console.log(userInfo);
     return {type: load_data, payload: userInfo}
 }
 
+export function saveInfo(data) {
+    return dispatch => {
+        axios.post('user/saveInfo', data)
+            .then((res) => {
+                if (res.data.code === 0) {
+                    dispatch(authSuccess(res.data.data))
+                } else {
+                    dispatch(errorMsg(res.data.msg))
+                }
+            })
+    }
+}
 
 export function login({user, pwd}) {
     if (!user || !pwd) {
@@ -59,7 +78,7 @@ export function login({user, pwd}) {
             .then((res) => {
                 console.log(res);
                 if (res.data.code === 0) {
-                    dispatch(loginSuccess({user, pwd}))
+                    dispatch(authSuccess(res.data.data))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }
@@ -82,7 +101,7 @@ export function register({user, pwd, repeatPwd, type}) {
             .then((res) => {
                 console.log(res);
                 if (res.data.code === 0) {
-                    dispatch(registerSuccess({user, type, pwd}))
+                    dispatch(authSuccess(res.data.data))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }

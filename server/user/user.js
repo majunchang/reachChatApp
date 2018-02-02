@@ -38,7 +38,6 @@ Router.post('/register', (req, res) => {
     // console.log(req.body.user);
     const {user, pwd, type} = req.body;
     User.findOne({user}, (err, doc) => {
-        console.log('0000');
         //  先看 是否有报错 然后看是否有重复的地方
         if (err) {
             console.log(err);
@@ -56,21 +55,22 @@ Router.post('/register', (req, res) => {
         //  使用 User.create的方式  无法获取到_id  信息  所以我们改为 save的方式
         const userModel = new User({user, type, pwd: md5Salt(pwd)});
         userModel.save()
-            .then((e, d) => {
-                if (e) {
-                    return res.json({
-                        code: error_code,
-                        msg: '添加用户失败'
-                    })
-                }
-                //  获取相关信息
+            .then((d) => {
                 const {user, type, _id} = d;
                 res.cookie('userId', _id)
                 return res.json({
                     code: success_code,
                     data: {user, type, _id}
                 })
-            })
+            }).catch((e) => {
+            if (e) {
+                return res.json({
+                    code: error_code,
+                    msg: '添加用户失败'
+                })
+            }
+            //  获取相关信息
+        })
     })
 })
 
@@ -84,11 +84,41 @@ Router.post('/login', (req, res) => {
                     msg: '服务器正在维护'
                 })
             }
-            // console.log(doc);
+            console.log(doc);
             res.cookie('userId', doc._id)
             return res.json({code: success_code, data: doc})
         }
     )
+})
+
+// 当用户 上传了头像以后
+Router.post('/saveInfo', (req, res) => {
+    console.log('上传头像之后的发生的事情');
+    const userId = req.cookies.userId;
+    if (!userId) {
+        return res.json({
+            code: 1,
+            msg: '登录已经失效'
+        })
+    }
+    const body = req.body;
+    User.findByIdAndUpdate(userId, body, (err, doc) => {
+        if (err) {
+            return res.json({
+                code: error_code,
+                msg: '服务器正在维护之中'
+            })
+        }
+        const data = Object.assign({}, {
+            user: doc.user,
+            type: doc.type
+        }, body)
+        return res.json({
+            code: success_code,
+            data: data
+        })
+    })
+
 })
 
 

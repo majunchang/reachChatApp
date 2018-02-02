@@ -6,7 +6,7 @@ mongoose.connect(url);
 mongoose.connection.on('connected', function () {
     console.log('mongodb数据库连接成功')
 })
-
+mongoose.Promise = require('q').Promise;
 
 const models = {
     user: {
@@ -26,6 +26,7 @@ const models = {
 
 for (var key in models) {
     mongoose.model(key, new mongoose.Schema(models[key]))
+
 }
 
 module.exports = {

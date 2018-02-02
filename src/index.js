@@ -16,6 +16,8 @@ import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
 import Login from './pages/login/login'
 import Register from './pages/register/register'
 import BossInfo from './pages/BossInfo/BossInfo'
+import GeniusInfo from './pages/GeniusInfo/GeniusInfo'
+import Dashboard  from './component/Dashboard/Dashboard'
 
 import './config'
 import './index.css'
@@ -27,9 +29,7 @@ const store = createStore(reducers, compose(
 ));
 
 
-function Boss() {
-    return <h2>我是Boss页面</h2>
-}
+
 
 ReactDOM.render(
     (
@@ -41,10 +41,15 @@ ReactDOM.render(
 
                     <Switch>
                         {/*router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
-                        <Route path='/boss' component={Boss}></Route>
+
                         <Route path='/login' component={Login} exact></Route>
                         <Route path='/register' component={Register}></Route>
                         <Route path='/bossinfo' component={BossInfo}></Route>
+                        <Route path='/geniusInfo' component={GeniusInfo}></Route>
+                        {/*<Route path='/boss' component={Boss}></Route>*/}
+                        {/*<Route path='/genius' component={Genius}></Route>*/}
+                        {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}
+                        <Route  component={Dashboard}></Route>
                     </Switch>
 
                 </div>
