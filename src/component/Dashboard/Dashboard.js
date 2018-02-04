@@ -3,19 +3,7 @@ import {NavBar} from 'antd-mobile'
 import {connect} from 'react-redux'
 import {Switch, Route} from 'react-router-dom'
 import FooterNavLink from '../FooterNavLink/FooterNavLink'
-
-function Boss() {
-    return (
-        <div>
-            <h2>我是Boss页面</h2>
-            <h2>我是Boss页面</h2>
-            <h2>我是Boss页面</h2>
-            <h2>我是Boss页面</h2>
-        </div>
-    )
-
-
-}
+import Boss from '../../component/Boss/Boss'
 
 function Genius() {
     return <h2>我是genius内部页面 </h2>
@@ -79,9 +67,10 @@ class Dashboard extends React.Component {
                 <NavBar mode="dark" className='fixd-header'>{navList.find(v => v.path == pathname).title}</NavBar>
                 <div style={{marginTop: 45}}>
                     <Switch>
-                        {navList.map(v => {
-                            <Route key={v.path} path={v.path} component={v.component}></Route>
-                        })}
+                        {/*<Route paht='/boss' component={Boss}></Route>*/}
+                        {navList.map(v =>
+                        <Route key={v.path} path={v.path} component={v.component}></Route>
+                        )}
                     </Switch>
                 </div>
                 <FooterNavLink data={navList}></FooterNavLink>

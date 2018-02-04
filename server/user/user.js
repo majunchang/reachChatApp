@@ -20,10 +20,13 @@ function md5Salt(pwd) {
 
 Router.get('/list', (req, res) => {
     //  执行清空数据库中 所有用户的代码
-    User.remove({}, function (err, doc) {
+    // User.remove({}, function (err, doc) {
+    //
+    // })
+    //  get的方式 使用query接收
+    const {type} = req.query
 
-    })
-    User.find({}, (err, doc) => {
+    User.find({type}, (err, doc) => {
         return res.json({
             code: 0,
             data: doc
