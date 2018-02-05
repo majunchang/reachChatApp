@@ -16,7 +16,7 @@ const models = {
         // 头像 个人简介 职位名称
         'avatar': {type: String},
         'desc': {type: String},
-        'jobTitle': {type: String},
+        'title': {type: String},
         //  如果是boss身份
         'company': {type: String, require: true},
         money: {type: String}

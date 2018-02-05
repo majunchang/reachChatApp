@@ -88,6 +88,12 @@ Router.post('/login', (req, res) => {
                 })
             }
             console.log(doc);
+            if (!doc) {
+                return res.json({
+                    code: error_code,
+                    msg: '用户名或者密码输入有误,请重新输入'
+                })
+            }
             res.cookie('userId', doc._id)
             return res.json({code: success_code, data: doc})
         }
@@ -105,6 +111,7 @@ Router.post('/saveInfo', (req, res) => {
         })
     }
     const body = req.body;
+    console.log(body);
     User.findByIdAndUpdate(userId, body, (err, doc) => {
         if (err) {
             return res.json({
@@ -116,6 +123,7 @@ Router.post('/saveInfo', (req, res) => {
             user: doc.user,
             type: doc.type
         }, body)
+        console.log(data);
         return res.json({
             code: success_code,
             data: data

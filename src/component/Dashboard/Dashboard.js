@@ -4,19 +4,21 @@ import {connect} from 'react-redux'
 import {Switch, Route} from 'react-router-dom'
 import FooterNavLink from '../FooterNavLink/FooterNavLink'
 import Boss from '../../component/Boss/Boss'
+import Genius from '../../component/Genius/Genius'
+import User from '../../component/User/User'
 
-function Genius() {
-    return <h2>我是genius内部页面 </h2>
-}
+
 
 function Msg() {
     return <h2>消息列表页面</h2>
 }
 
-function User() {
 
-    return <h2>个人中心页面</h2>
-}
+// function User() {
+//
+//     return <h2>个人中心页面</h2>
+// }
+
 
 @connect(
     state => state
@@ -67,7 +69,6 @@ class Dashboard extends React.Component {
                 <NavBar mode="dark" className='fixd-header'>{navList.find(v => v.path == pathname).title}</NavBar>
                 <div style={{marginTop: 45}}>
                     <Switch>
-                        {/*<Route paht='/boss' component={Boss}></Route>*/}
                         {navList.map(v =>
                         <Route key={v.path} path={v.path} component={v.component}></Route>
                         )}

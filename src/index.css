@@ -18,3 +18,7 @@
 .page-content{
     padding:45px 5px;
 }
+
+.logout{
+    z-index: 100;
+}
