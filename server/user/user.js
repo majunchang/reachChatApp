@@ -1,7 +1,9 @@
+
 const express = require('express');
 const Router = express.Router();
 const model = require('../model/model');
 const User = model.getModel('user')
+const Chat = model.getModel('chat')
 const utils = require('utility');
 
 
@@ -157,6 +159,22 @@ Router.get('/info', (req, res) => {
         }
 
     })
+})
+
+
+Router.get('/getMsgList', (req, res) => {
+    const user = req.cookies.userId;
+    console.log(user);
+    Chat.find({'$or':[{from:user,to:user}]},(err,doc)=>{
+        if(!err){
+            return res.json({
+                code: success_code,
+                msgs:doc
+            })
+        }
+    })
+
+
 })
 
 

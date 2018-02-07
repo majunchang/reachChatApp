@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from '../../component/logo/logo'
-import {List, InputItem, WingBlank, WhiteSpace, Button, Radio} from 'antd-mobile'
+import {List, InputItem,  WhiteSpace, Button, Radio} from 'antd-mobile'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {register} from "../../redux/userRedux";
@@ -23,6 +23,8 @@ import {register} from "../../redux/userRedux";
     (state) => state.user,
     {register}
 )
+
+
 
 
 class Register extends React.Component {
@@ -77,11 +79,11 @@ class Register extends React.Component {
                 </List>
                 <WhiteSpace></WhiteSpace>
                 <List>
-                    <RadioItem checked={this.state.type == 'boss'}
+                    <RadioItem checked={this.state.type === 'boss'}
                                onChange={() => this.handleChange('type', 'boss')}>
                         CEO(首席执行官)
                     </RadioItem>
-                    <RadioItem checked={this.state.type == 'genius'}
+                    <RadioItem checked={this.state.type === 'genius'}
                                onChange={() => this.handleChange('type', 'genius')}>
                         hacker(顶级黑客)
                     </RadioItem>

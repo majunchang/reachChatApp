@@ -21,7 +21,14 @@ const models = {
         'company': {type: String, require: true},
         money: {type: String}
     },
-    chat: {}
+    chat: {
+        'chatid': {type: String, require: true},
+        'from': {type: String, require: true},
+        'to': {type: String, require: true},
+        'read': {type: Boolean, default: false},
+        'content': {type: String, require: true},
+        'create_time': {type: Number, default: new Date().getTime()}
+    }
 }
 
 for (var key in models) {

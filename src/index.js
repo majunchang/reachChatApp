@@ -18,6 +18,7 @@ import Register from './pages/register/register'
 import BossInfo from './pages/BossInfo/BossInfo'
 import GeniusInfo from './pages/GeniusInfo/GeniusInfo'
 import Dashboard  from './component/Dashboard/Dashboard'
+import Chat from './component/Chat/Chat'
 
 import './config'
 import './index.css'
@@ -46,6 +47,7 @@ ReactDOM.render(
                         <Route path='/register' component={Register}></Route>
                         <Route path='/bossinfo' component={BossInfo}></Route>
                         <Route path='/geniusInfo' component={GeniusInfo}></Route>
+                        <Route path='/chat/:user/:me/:id' component={Chat}></Route>
                         {/*<Route path='/boss' component={Boss}></Route>*/}
                         {/*<Route path='/genius' component={Genius}></Route>*/}
                         {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}

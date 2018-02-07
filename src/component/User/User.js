@@ -2,9 +2,12 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Result, List, Brief, WhiteSpace, Modal} from 'antd-mobile'
 import browserCookie from 'browser-cookies'
+import {logoutSubmit}  from '../../redux/userRedux'
+import {Redirect} from 'react-router-dom'
 
 @connect(
-    state => state.user
+    state => state.user,
+    {logoutSubmit}
 )
 
 
@@ -21,9 +24,10 @@ class User extends React.Component {
             {text: '取消', onPress: () => console.log('cancel')},
             {
                 text: '确认', onPress: () => {
-                    browserCookie.erase('userid')
-                    //  在这里学习到了一种  使浏览器刷新的效果
-                    window.location.href = window.location.href
+                    // browserCookie.erase('userid')
+                    //  在这里学习到了一种  使浏览器刷新一次的效果
+                    // window.location.href = window.location.href
+                    this.props.logoutSubmit();
                 }
             }
         ])
@@ -39,12 +43,12 @@ class User extends React.Component {
                 <Result
                     img={<img src={require(`../img/${props.avatar}.png`)} style={{width: 50}} alt=''/>}
                     title={props.user}
-                    message={props.type == 'boss' ? props.company : null}
+                    message={props.type === 'boss' ? props.company : null}
                 >
 
                 </Result>
 
-                <List renderHeader={() => props.type == 'boss' ? '招聘需求' : '个人技能简介'}>
+                <List renderHeader={() => props.type === 'boss' ? '招聘需求' : '个人技能简介'}>
                     <Item multipleLine>
                         {props.title}
                         {props.desc.split('\n').map(v => (
@@ -58,7 +62,7 @@ class User extends React.Component {
                     <Item onClick={this.logout}  className='logout'>退出当前登录</Item>
                 </List>
             </div>
-        ) : null
+        ) : <Redirect to={props.redirectTo}></Redirect>
     }
 
 
