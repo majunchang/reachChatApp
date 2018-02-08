@@ -31,7 +31,7 @@ export function user(state = initState, action) {
         case load_data:
             return {...state, ...action.payload}
         case log_out:
-            return {...initState,redirectTo:'/login'}
+            return {...initState, redirectTo: '/login'}
         default:
             return state
     }
@@ -86,6 +86,7 @@ export function login({user, pwd}) {
                 if (res.data.code === 0) {
                     console.log(res.data.data);
                     dispatch(authSuccess(res.data.data))
+                    window.localStorage.setItem('id', res.data.data._id);
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }

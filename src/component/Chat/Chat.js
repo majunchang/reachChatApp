@@ -1,8 +1,8 @@
 import React from 'react'
 import io from 'socket.io-client'
-import {List, Button, InputItem,NavBar} from 'antd-mobile'
+import {List, Button, InputItem, NavBar} from 'antd-mobile'
 import {connect} from 'react-redux'
-import {getMsgList,sendMsg} from '../../redux/chat'
+import { sendMsg, } from '../../redux/chat'
 import browserCookie from 'browser-cookies'
 
 const socket = io('ws://localhost:9000')
@@ -12,7 +12,7 @@ const socket = io('ws://localhost:9000')
 
 @connect(
     state => state,
-    {getMsgList,sendMsg}
+    {sendMsg}
 )
 
 class Chat extends React.Component {
@@ -34,7 +34,6 @@ class Chat extends React.Component {
         //     })
         //     console.log(data);
         // })
-        this.props.getMsgList()
 
     }
 
@@ -47,28 +46,46 @@ class Chat extends React.Component {
         // })
         // this.setState({text: ''})
         console.log(this.props);
-        const from = this.props.match.params.me;
+
+        const from = this.props.user._id;
         const to = this.props.match.params.id;
         const msg = this.state.text;
-        this.props.sendMsg({from,to,msg})
+        this.props.sendMsg({from, to, msg})
         this.setState({text: ''})
     }
 
     render() {
-        console.log('liuyf');
-        console.log(this.state);
+        // console.log(this.state);
         console.log(this.props);
+        const meId = window.localStorage.getItem('id');
+        const otherSide = this.props.match.params.id;
+        const Item = List.Item;
         return (
-            <div>
+            <div id='chat-page'>
                 <NavBar mode="dark" className='fixd-header'>{this.props.match.params.user}</NavBar>
                 <div style={{marginTop: 45}}></div>
-                {this.state.msg.map(v => {
-                    return (<div className='chatDiv'>
-                        {/*<p key={v.text}*/}
-                           {/*className={this.props.match.params.me === v.talkself ? 'self' : 'other'}>{v.text}</p>*/}
-                        <p key={v.text} >{v.text}</p>
-                    </div>)
+                {this.props.chat.chatmsg.map(v => {
+                    return v.from === otherSide ? (
+                        //   对方发来的
+                        <List key={v._id}>
+                            {/*<p key={v.text}*/}
+                            {/*className={this.props.match.params.me === v.talkself ? 'self' : 'other'}>{v.text}</p>*/}
+                            <Item>
+                                {v.content}
+                            </Item>
+                        </List>
 
+                    ) : (
+                        // 我发来的
+                        <List key={v._id}>
+                            <Item
+                            extra={'avatar'}
+                            className='chat-me'
+                            >
+                                {v.content}
+                            </Item>
+                        </List>
+                    )
                 })}
                 <div className='stick-footer'>
                     <List>

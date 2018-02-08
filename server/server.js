@@ -6,6 +6,8 @@ const app = express();
 //  引入socket.io  并和express搭配使用
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const model = require('./model/model');
+const Chat = model.getModel('chat')
 
 //  检测身份的标识
 let identify = [];
@@ -14,13 +16,22 @@ let identify = [];
 io.on('connection', (socket) => {
     console.log('socket已经连接');
     socket.on('sendmsg', (data) => {
-        identify.push({
-            talkself:data.talkself,
-            talkObject:data.talkObject
-        })
+        // identify.push({
+        //     talkself:data.talkself,
+        //     talkObject:data.talkObject
+        // })
         console.log(data);
-        //  拿到数据以后  通知全局
-        io.emit('receMsg',data)
+        const {from,to,msg} = data;
+        const chatId = [from,to].sort().join('_');
+        console.log(chatId);
+        Chat.create({chatId,from,to,content:msg},(err,doc)=>{
+            if(!err){
+                //  拿到数据以后  通知全局
+                console.log(doc);
+                io.emit('receMsg',Object.assign({},doc._doc))
+            }
+        })
+
     })
 })
 

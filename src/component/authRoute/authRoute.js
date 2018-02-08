@@ -13,7 +13,7 @@ import {connect} from 'react-redux'
 
 class AuthRoute extends React.Component {
     componentDidMount() {
-        axios.get('user/info')
+        axios.get('/user/info')
             .then((res) => {
                 if (res.data.code === 0) {
                     this.props.loadData(res.data.data)

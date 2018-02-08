@@ -44,10 +44,12 @@
 .logout {
     z-index: 100;
 }
-.chatDiv{
-    overflow: hidden;
-    min-height: 30px;
-}
+
+
+/*.chatDiv{*/
+    /*overflow: hidden;*/
+    /*min-height: 30px;*/
+/*}*/
 .self{
     display: inline-block;
     padding: 5px 10px;

@@ -6,7 +6,7 @@ import FooterNavLink from '../FooterNavLink/FooterNavLink'
 import Boss from '../../component/Boss/Boss'
 import Genius from '../../component/Genius/Genius'
 import User from '../../component/User/User'
-
+import {getMsgList, recvMsg, sendMsg} from '../../redux/chat'
 
 
 function Msg() {
@@ -21,12 +21,17 @@ function Msg() {
 
 
 @connect(
-    state => state
+    state => state,
+    {getMsgList, recvMsg}
 )
 
 
 class Dashboard extends React.Component {
 
+    componentDidMount(){
+        this.props.getMsgList()
+        this.props.recvMsg()
+    }
 
     render() {
         const {pathname} = this.props.location;

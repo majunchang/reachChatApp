@@ -18,6 +18,7 @@ export function chat(state = initState, action) {
         case msgList:
             return {...state, chatmsg: action.payload, unread: action.payload.filter(v => !v.read).length}
         case msgRecv:
+            return {...state,chatmsg:[...state.chatmsg,action.payload],unread:state.unread+1}
         case msgRead:
         default:
             return state
@@ -37,12 +38,25 @@ export function getMsgList() {
             .then((res) => {
                 console.log(res);
                 if (res.data.code === 0) {
+
                     dispatch(getmaglist(res.data.msgs))
                 }
             })
     }
 }
 
+function msgRecvfn(msg) {
+    return {type:msgRecv,payload:msg}
+}
+
+export function recvMsg(msg) {
+    return dispatch=>{
+        socket.on('receMsg',(data)=>{
+            console.log('receMsg',data);
+            dispatch(msgRecvfn(data))
+        })
+    }
+}
 
 export function sendMsg({from,to,msg}) {
     return dispatch=>{

@@ -24,7 +24,7 @@ class User extends React.Component {
             {text: '取消', onPress: () => console.log('cancel')},
             {
                 text: '确认', onPress: () => {
-                    // browserCookie.erase('userid')
+                    browserCookie.erase('userid')
                     //  在这里学习到了一种  使浏览器刷新一次的效果
                     // window.location.href = window.location.href
                     this.props.logoutSubmit();
