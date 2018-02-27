@@ -11,20 +11,18 @@ import {connect} from 'react-redux'
 class UserCard extends React.Component {
 
     componentDidMount() {
-       console.log(this.props);
+       // console.log(this.props);
     }
 
     handleClick(v) {
-        this.props.history.push(`/chat/${v.user}/${this.props.user}/${v._id}`)
+        this.props.history.push(`/chat/${v._id}`)
     }
 
     render() {
         const Header = Card.Header
         const Body = Card.Body
-        console.log(this.props);
         return (
             <div>
-
                 {this.props.userlist.map(v => (
                     v.avatar ? (<Card key={v._id} onClick={() => this.handleClick(v)}>
                         <Header

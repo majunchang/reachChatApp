@@ -1,18 +1,16 @@
 import React from 'react'
-import io from 'socket.io-client'
-import {List, Button, InputItem, NavBar} from 'antd-mobile'
+// import io from 'socket.io-client'
+import {List, InputItem, NavBar, Icon, Grid} from 'antd-mobile'
 import {connect} from 'react-redux'
-import { sendMsg, } from '../../redux/chat'
-import browserCookie from 'browser-cookies'
+import {sendMsg, getMsgList, recvMsg, readmsg} from '../../redux/chat'
+import {getChatId} from '../../utils'
 
-const socket = io('ws://localhost:9000')
-// socket.on('receMsg',(data)=>{
-//     console.log(data);
-// })
+// const socket = io('ws://localhost:9000')
+
 
 @connect(
     state => state,
-    {sendMsg}
+    {sendMsg, getMsgList, recvMsg, readmsg}
 )
 
 class Chat extends React.Component {
@@ -27,7 +25,21 @@ class Chat extends React.Component {
     }
 
     componentDidMount() {
-
+        /*
+        在我们刷新聊天页面的时候   聊天数据 会丢失  所以进行一下
+        判断  如果为0  则请求一次   同时减少了并发
+        */
+        if (!this.props.chat.chatmsg.length) {
+            this.props.getMsgList()
+            this.props.recvMsg()
+        }
+        //  新增方法
+        console.log(this.props);
+        var toId = this.props.match.params.id
+        this.props.readmsg(toId)
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+        }, 0)
         // socket.on('receMsg', (data) => {
         //     this.setState({
         //         msg: [...this.state.msg, data]
@@ -45,32 +57,66 @@ class Chat extends React.Component {
         //     talkObject: this.props.match.params.user,
         // })
         // this.setState({text: ''})
-        console.log(this.props);
+        // console.log(this.props);
+        console.log('majunchang');
 
         const from = this.props.user._id;
         const to = this.props.match.params.id;
         const msg = this.state.text;
         this.props.sendMsg({from, to, msg})
-        this.setState({text: ''})
+        this.setState({text: '', showEmoji: false})
+
+    }
+
+    // 修复跑马灯
+    Fixcarousel() {
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+        }, 0)
     }
 
     render() {
+        var emoji = '😀 😂 🤣 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓'
+            .split(' ')
+            .filter((v => v))
+            .map(v => ({text: v}))
         // console.log(this.state);
-        console.log(this.props);
-        const meId = window.localStorage.getItem('id');
+        // console.log(this.props);
+
+
+        // const meId = window.localStorage.getItem('id');
         const otherSide = this.props.match.params.id;
         const Item = List.Item;
+        const users = this.props.chat.users;
+        // console.log(this.props);
+        // console.log(users);
+        if (!users[otherSide]) {
+            return null;
+        }
+        const ChatId = getChatId(this.props.user._id, otherSide);
+        const chatMsg = this.props.chat.chatmsg.filter((v) => v.chatId === ChatId);
+        const showEmoji = this.state.showEmoji;
         return (
             <div id='chat-page'>
-                <NavBar mode="dark" className='fixd-header'>{this.props.match.params.user}</NavBar>
+                <NavBar mode="dark"
+                        icon={<Icon type='left'></Icon>}
+                        onLeftClick={() => {
+                            this.props.history.goBack()
+                        }}
+                        className='fixd-header'
+                >{this.props.match.params.user}</NavBar>
                 <div style={{marginTop: 45}}></div>
-                {this.props.chat.chatmsg.map(v => {
+                {chatMsg.map(v => {
+                    const avatar = require(`../img/${users[v.from].avatar}.png`);
                     return v.from === otherSide ? (
                         //   对方发来的
                         <List key={v._id}>
                             {/*<p key={v.text}*/}
                             {/*className={this.props.match.params.me === v.talkself ? 'self' : 'other'}>{v.text}</p>*/}
-                            <Item>
+
+                            <Item
+                                thumb={avatar}
+                            >
                                 {v.content}
                             </Item>
                         </List>
@@ -79,8 +125,8 @@ class Chat extends React.Component {
                         // 我发来的
                         <List key={v._id}>
                             <Item
-                            extra={'avatar'}
-                            className='chat-me'
+                                extra={<img src={avatar}/>}
+                                className='chat-me'
                             >
                                 {v.content}
                             </Item>
@@ -98,12 +144,36 @@ class Chat extends React.Component {
                                 })
                             }}
                             extra={
-                                <span onClick={() => this.handleSubmit()}>发送</span>
+                                <div className='emojiBox'>
+                                    <span style={{marginRight: 15}}
+                                          onClick={() => {
+                                              this.setState({showEmoji: !this.state.showEmoji})
+                                              this.Fixcarousel();
+                                          }}
+                                    >
+                                       😉
+                                    </span>
+
+                                    <span onClick={() => this.handleSubmit()}>发送</span>
+                                </div>
+
                             }
                         >
                         </InputItem>
 
                     </List>
+                    {showEmoji ? <Grid
+                        data={emoji}
+                        columnNum={9}
+                        carouselMaxRow={4}
+                        isCarousel={true}
+                        onClick={el => {
+                            // console.log(el);
+                            this.setState({
+                                text: this.state.text + el.text
+                            })
+                        }}
+                    > </Grid> : null}
                 </div>
             </div>
         )

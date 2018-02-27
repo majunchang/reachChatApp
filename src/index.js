@@ -11,7 +11,7 @@ import AuthRoute from './component/authRoute/authRoute'
 
 
 // 引入react-router组件
-import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
+import {BrowserRouter, Route,  Switch} from 'react-router-dom'
 // 引入页面组件 】
 import Login from './pages/login/login'
 import Register from './pages/register/register'
@@ -47,7 +47,7 @@ ReactDOM.render(
                         <Route path='/register' component={Register}></Route>
                         <Route path='/bossinfo' component={BossInfo}></Route>
                         <Route path='/geniusInfo' component={GeniusInfo}></Route>
-                        <Route path='/chat/:user/:me/:id' component={Chat}></Route>
+                        <Route path='/chat/:id' component={Chat}></Route>
                         {/*<Route path='/boss' component={Boss}></Route>*/}
                         {/*<Route path='/genius' component={Genius}></Route>*/}
                         {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}

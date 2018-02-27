@@ -30,6 +30,18 @@
     text-align: right;
 }
 
+#chat-page .am-grid-text {
+    margin-top: 0;
+}
+
+#chat-page .am-grid-icon {
+    display: none;
+}
+
+#chat-page .am-input-extra {
+    max-height: 40px;
+}
+
 .stick-footer {
     z-index: 10;
     position: fixed;
@@ -37,7 +49,7 @@
     width: 100%
 }
 
-.am-card{
+.am-card {
     z-index: 100;
 }
 
@@ -45,12 +57,11 @@
     z-index: 100;
 }
 
-
 /*.chatDiv{*/
-    /*overflow: hidden;*/
-    /*min-height: 30px;*/
+/*overflow: hidden;*/
+/*min-height: 30px;*/
 /*}*/
-.self{
+.self {
     display: inline-block;
     padding: 5px 10px;
     background: #28c0f7;
@@ -60,10 +71,11 @@
     border-radius: 10px;
     color: white;
     margin: 5px;
-    word-wrap:break-word; word-break:break-all;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
-.other{
+.other {
     display: inline-block;
     padding: 5px 10px;
     background: #28c0f7;
@@ -72,5 +84,12 @@
     border-radius: 10px;
     color: white;
     margin: 5px;
-    word-wrap:break-word; word-break:break-all;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.emojiBox span {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
 }

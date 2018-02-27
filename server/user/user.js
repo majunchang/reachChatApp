@@ -1,4 +1,3 @@
-
 const express = require('express');
 const Router = express.Router();
 const model = require('../model/model');
@@ -38,7 +37,7 @@ Router.get('/list', (req, res) => {
 
 
 Router.post('/register', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     // console.log('刘亦菲');
     // console.log(req.body.user);
     const {user, pwd, type} = req.body;
@@ -89,7 +88,7 @@ Router.post('/login', (req, res) => {
                     msg: '服务器正在维护'
                 })
             }
-            console.log(doc);
+            // console.log(doc);
             if (!doc) {
                 return res.json({
                     code: error_code,
@@ -113,7 +112,6 @@ Router.post('/saveInfo', (req, res) => {
         })
     }
     const body = req.body;
-    console.log(body);
     User.findByIdAndUpdate(userId, body, (err, doc) => {
         if (err) {
             return res.json({
@@ -125,7 +123,6 @@ Router.post('/saveInfo', (req, res) => {
             user: doc.user,
             type: doc.type
         }, body)
-        console.log(data);
         return res.json({
             code: success_code,
             data: data
@@ -164,17 +161,38 @@ Router.get('/info', (req, res) => {
 
 Router.get('/getMsgList', (req, res) => {
     const user = req.cookies.userId;
-    console.log(user);
-    Chat.find({'$or':[{from:user,to:user}]},(err,doc)=>{
-        if(!err){
-            return res.json({
-                code: success_code,
-                msgs:doc
-            })
-        }
+    // console.log(user);
+    //  查询所有的用户 并将其返回
+    User.find({}, function (e, userDoc) {
+        let users = {}
+        userDoc.forEach((v) => {
+            users[v._id] = {
+                name: v.user,
+                avatar: v.avatar
+            }
+        })
+        Chat.find({'$or': [{from: user}, {to: user}]}, (err, doc) => {
+            if (!err) {
+                return res.json({
+                    code: success_code,
+                    msgs: doc,
+                    users: users
+                })
+            }
+        })
     })
+})
 
-
+Router.post('/user/readmsg', (req, res) => {
+    const userid = req.cookies.userId;
+    const {to} = req.body;
+    //  from和to  是我发给别人  而我更新未读消息 是 别人发送给我的
+    Chat.update({from: to, to: userid}, {'$set': {read: true}}, function (err, doc) {
+        if (!err) {
+            return res.json({code: 0})
+        }
+        return res.json({code: 500, msg: '修正未读消息数量失败'})
+    })
 })
 
 

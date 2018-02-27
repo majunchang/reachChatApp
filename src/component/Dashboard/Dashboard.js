@@ -6,12 +6,13 @@ import FooterNavLink from '../FooterNavLink/FooterNavLink'
 import Boss from '../../component/Boss/Boss'
 import Genius from '../../component/Genius/Genius'
 import User from '../../component/User/User'
-import {getMsgList, recvMsg, sendMsg} from '../../redux/chat'
+import {getMsgList, recvMsg} from '../../redux/chat'
+import Msg from '../Msg/Msg'
 
 
-function Msg() {
-    return <h2>消息列表页面</h2>
-}
+// function Msg() {
+//     return <h2>消息列表页面</h2>
+// }
 
 
 // function User() {
@@ -29,8 +30,10 @@ function Msg() {
 class Dashboard extends React.Component {
 
     componentDidMount(){
-        this.props.getMsgList()
-        this.props.recvMsg()
+        if(!this.props.chat.chatmsg.length){
+            this.props.getMsgList()
+            this.props.recvMsg()
+        }
     }
 
     render() {
@@ -80,7 +83,6 @@ class Dashboard extends React.Component {
                     </Switch>
                 </div>
                 <FooterNavLink data={navList}></FooterNavLink>
-
             </div>
         )
     }

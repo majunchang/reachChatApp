@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Result, List, Brief, WhiteSpace, Modal} from 'antd-mobile'
+import {Result, List,  WhiteSpace, Modal} from 'antd-mobile'
 import browserCookie from 'browser-cookies'
 import {logoutSubmit}  from '../../redux/userRedux'
 import {Redirect} from 'react-router-dom'

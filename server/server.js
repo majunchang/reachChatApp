@@ -20,14 +20,12 @@ io.on('connection', (socket) => {
         //     talkself:data.talkself,
         //     talkObject:data.talkObject
         // })
-        console.log(data);
+        // console.log(data);
         const {from,to,msg} = data;
         const chatId = [from,to].sort().join('_');
-        console.log(chatId);
         Chat.create({chatId,from,to,content:msg},(err,doc)=>{
             if(!err){
                 //  拿到数据以后  通知全局
-                console.log(doc);
                 io.emit('receMsg',Object.assign({},doc._doc))
             }
         })
