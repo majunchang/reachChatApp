@@ -57,9 +57,7 @@ function msgRecvfn(msg, userId) {
     return {type: msgRecv, payload: msg, userId}
 }
 
-function msgRead({from, to, num}) {
-    return {type: msgRead, payload: {from, to, num}}
-}
+
 
 export function readmsg(to) {
     return (dispatch, getState) => {
