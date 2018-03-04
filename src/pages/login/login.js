@@ -74,6 +74,7 @@ class Login extends React.Component {
 
     register() {
         // console.log(this.props);
+        console.log('点击了注册按钮')
         this.props.history.push('/register');
     }
 

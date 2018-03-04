@@ -93,3 +93,7 @@
     height: 30px;
     line-height: 30px;
 }
+
+.msgCard{
+    z-index: 1000;
+}
