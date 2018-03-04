@@ -29,14 +29,11 @@ class Chat extends React.Component {
         在我们刷新聊天页面的时候   聊天数据 会丢失  所以进行一下
         判断  如果为0  则请求一次   同时减少了并发
         */
-        if (!this.props.chat.chatmsg.length) {
+       console.log(this.props.chat.chatmsg.length)
+        if (!this.props.chat.chatmsg.length&&this.props.chat.chatmsg[0] !== this.props.user._id) {
             this.props.getMsgList()
             this.props.recvMsg()
-        }
-        //  新增方法
-        console.log(this.props);
-        var toId = this.props.match.params.id
-        this.props.readmsg(toId)
+        }    
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'))
         }, 0)
@@ -48,6 +45,15 @@ class Chat extends React.Component {
         // })
 
     }
+    
+    componentWillUnmount() {
+        console.log('unmount')
+        //  新增方法
+        // console.log(this.props);
+        var toId = this.props.match.params.id
+        this.props.readmsg(toId)
+    }
+    
 
     handleSubmit() {
         // 点击发送按钮之后   调用socket.io的emit方法  向后端进行推送
@@ -94,6 +100,8 @@ class Chat extends React.Component {
             return null;
         }
         const ChatId = getChatId(this.props.user._id, otherSide);
+        console.log(ChatId)
+        console.log(this.props.chat.chatmsg)
         const chatMsg = this.props.chat.chatmsg.filter((v) => v.chatId === ChatId);
         const showEmoji = this.state.showEmoji;
         return (

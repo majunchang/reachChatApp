@@ -9,57 +9,50 @@ import {Provider} from 'react-redux'
 import reducers from './reducers'
 import AuthRoute from './component/authRoute/authRoute'
 
-
 // 引入react-router组件
-import {BrowserRouter, Route,  Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 // 引入页面组件 】
 import Login from './pages/login/login'
 import Register from './pages/register/register'
 import BossInfo from './pages/BossInfo/BossInfo'
 import GeniusInfo from './pages/GeniusInfo/GeniusInfo'
-import Dashboard  from './component/Dashboard/Dashboard'
+import Dashboard from './component/Dashboard/Dashboard'
 import Chat from './component/Chat/Chat'
 
 import './config'
 import './index.css'
 
-
 const store = createStore(reducers, compose(
-    applyMiddleware(thunk),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
-));
-
-
-
+  applyMiddleware(thunk),
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+))
 
 ReactDOM.render(
-    (
-        <Provider store={store}>
-            <BrowserRouter>
-                <div>
-                    {/*Switch的作用  只渲染命中的第一个路由*/}
-                    <AuthRoute></AuthRoute>
+  (
+    <Provider store={store}>
+      <BrowserRouter>
+        <div>
+          {/* Switch的作用  只渲染命中的第一个路由 */}
+          <AuthRoute />
 
-                    <Switch>
-                        {/*router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
+          <Switch>
+            {/* router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
 
-                        <Route path='/login' component={Login} exact></Route>
-                        <Route path='/register' component={Register}></Route>
-                        <Route path='/bossinfo' component={BossInfo}></Route>
-                        <Route path='/geniusInfo' component={GeniusInfo}></Route>
-                        <Route path='/chat/:id' component={Chat}></Route>
-                        {/*<Route path='/boss' component={Boss}></Route>*/}
-                        {/*<Route path='/genius' component={Genius}></Route>*/}
-                        {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}
-                        <Route  component={Dashboard}></Route>
-                    </Switch>
+            <Route path='/login' component={Login} exact />
+            <Route path='/register' component={Register} />
+            <Route path='/bossinfo' component={BossInfo} />
+            <Route path='/geniusInfo' component={GeniusInfo} />
+            <Route path='/chat/:id' component={Chat} />
+            {/* <Route path='/boss' component={Boss}></Route> */}
+            {/* <Route path='/genius' component={Genius}></Route> */}
+            {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}
+            <Route component={Dashboard} />
+          </Switch>
 
-                </div>
+        </div>
 
-            </BrowserRouter>
-        </Provider>
-    ),
-    document.getElementById('root')
+      </BrowserRouter>
+    </Provider>
+  ),
+  document.getElementById('root')
 )
-
-
