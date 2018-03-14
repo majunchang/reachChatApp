@@ -83,7 +83,6 @@ export function login ({user, pwd}) {
       .then((res) => {
         console.log(res)
         if (res.data.code === 0) {
-          console.log(res.data.data)
           dispatch(authSuccess(res.data.data))
           window.localStorage.setItem('id', res.data.data._id)
         } else {
@@ -105,7 +104,6 @@ export function register ({user, pwd, repeatPwd, type}) {
   return dispatch => {
     axios.post('/user/register', {user, type, pwd})
       .then((res) => {
-        console.log(res)
         if (res.data.code === 0) {
           dispatch(authSuccess(res.data.data))
         } else {

@@ -105,7 +105,7 @@ class Chat extends React.Component {
           className='fixd-header'
         >{this.props.match.params.user}</NavBar>
         <div style={{marginTop: 45}} />
-        <QueueAnim delay={100}>
+        {/*<QueueAnim delay={100}>*/}
         {chatMsg.map(v => {
           const avatar = require(`../img/${users[v.from].avatar}.png`)
           return v.from === otherSide ? (
@@ -133,7 +133,7 @@ class Chat extends React.Component {
             </List>
           )
         })}
-        </QueueAnim>
+        {/*</QueueAnim>*/}
         <div className='stick-footer'>
           <List>
                     <InputItem

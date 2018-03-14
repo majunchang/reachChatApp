@@ -8,6 +8,7 @@ import Genius from '../../component/Genius/Genius'
 import User from '../../component/User/User'
 import {getMsgList, recvMsg} from '../../redux/chat'
 import Msg from '../Msg/Msg'
+import Login from '../../pages/login/login'
 
 
 // function Msg() {
@@ -72,7 +73,9 @@ class Dashboard extends React.Component {
             },
         ]
 
+        console.log(pathname);
         return (
+            pathname =='/'? <Route redirect='/login' component={Login}/>:
             <div>
                 <NavBar mode="dark" className='fixd-header'>{navList.find(v => v.path === pathname).title}</NavBar>
                 <div style={{marginTop: 45}}>

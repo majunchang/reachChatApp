@@ -19,6 +19,7 @@ import GeniusInfo from './pages/GeniusInfo/GeniusInfo'
 import Dashboard from './component/Dashboard/Dashboard'
 import Chat from './component/Chat/Chat'
 
+// 增加拦截器的功能
 import './config'
 import './index.css'
 
@@ -34,10 +35,8 @@ ReactDOM.render(
         <div>
           {/* Switch的作用  只渲染命中的第一个路由 */}
           <AuthRoute />
-
           <Switch>
             {/* router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
-
             <Route path='/login' component={Login} exact />
             <Route path='/register' component={Register} />
             <Route path='/bossinfo' component={BossInfo} />

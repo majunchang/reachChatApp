@@ -2,6 +2,7 @@ var express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 var userRouter = require('./user/user')
+var path = require('path')
 const app = express()
 //  引入socket.io  并和express搭配使用
 const server = require('http').Server(app)
@@ -30,9 +31,18 @@ io.on('connection', (socket) => {
     })
   })
 })
-
+//  设置静态资源的访问路径
+app.use('/',express.static(path.resolve('build')))
+//  设置中间件
+app.use(function (req,res,next) {
+    if(req.url.startsWith('/user')||req.url.startsWith('/static')){
+      return next()
+    }
+    return res.sendFile(path.resolve('build/index.html'))
+})
 app.use(cookieParser())
 app.use(bodyParser.json())
+
 app.use('/user', userRouter)
 
 // app.listen(9000, () => {

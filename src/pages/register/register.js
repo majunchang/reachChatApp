@@ -36,23 +36,12 @@ class Register extends React.Component {
             pwd: '',
             repeatPwd: ''
         }
-        // console.log('liuyifei');
-        // console.log(this.state);
-        // console.log(this.props);
         this.handleRegister = this.handleRegister.bind(this);
 
     }
 
     handleRegister() {
-        // console.log('李一桐');
-        // console.log(this.state);
-        // console.log(this.props);
         this.props.register(this.state);
-        // setTimeout(() => {
-        //     console.log('杨幂');
-        //     console.log(this.props);
-        // }, 1000)
-
     }
 
     handleChange(key, val) {
@@ -66,8 +55,6 @@ class Register extends React.Component {
 
         return (
             <div>
-                {/*<h1>{this.props.state}</h1>*/}
-                {/*<h1>{this.props.test}</h1>*/}
                 {this.props.redirectTo ? <Redirect to={this.props.redirectTo}></Redirect> : null}
                 <Logo></Logo>
                 <h2>我是注册页面</h2>

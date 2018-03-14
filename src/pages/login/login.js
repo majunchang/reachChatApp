@@ -73,7 +73,6 @@ class Login extends React.Component {
     }
 
     register() {
-        // console.log(this.props);
         console.log('点击了注册按钮')
         this.props.history.push('/register');
     }
@@ -85,7 +84,6 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                {/*<Hello></Hello>*/}
                 {this.props.redirectTo && this.props.redirectTo !== '/login' ?
                     <Redirect to={this.props.redirectTo}></Redirect> : null}
                 <Logo></Logo>
