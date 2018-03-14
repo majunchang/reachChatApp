@@ -15,7 +15,6 @@ class Msg extends React.Component {
         newArr.push(v)
       }
     })
-    console.log(newArr)
     return newArr[newArr.length - 1]
   }
 
@@ -38,7 +37,6 @@ class Msg extends React.Component {
     //  当前登录的用户id
     var userId = this.props.user._id
     const userInfo = this.props.chat.users
-    console.log(chatList)
     return (
       <div>
         {chatList.map(v => {

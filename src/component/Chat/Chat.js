@@ -4,9 +4,8 @@ import {List, InputItem, NavBar, Icon, Grid} from 'antd-mobile'
 import {connect} from 'react-redux'
 import {sendMsg, getMsgList, recvMsg, readmsg} from '../../redux/chat'
 import {getChatId} from '../../utils'
-
+import QueueAnim from 'rc-queue-anim'
 // const socket = io('ws://localhost:9000')
-
 
 @connect(
     state => state,
@@ -14,178 +13,171 @@ import {getChatId} from '../../utils'
 )
 
 class Chat extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            text: '',
-            msg: [],
-            talkself: this.props.user,
-            talkObject: this.props.match.params.user,
-        }
+  constructor (props) {
+    super(props)
+    this.state = {
+      text: '',
+      msg: [],
+      talkself: this.props.user,
+      talkObject: this.props.match.params.user
     }
+  }
 
-    componentDidMount() {
-        /*
+  componentDidMount () {
+    /*
         在我们刷新聊天页面的时候   聊天数据 会丢失  所以进行一下
         判断  如果为0  则请求一次   同时减少了并发
         */
-       console.log(this.props.chat.chatmsg.length)
-        if (!this.props.chat.chatmsg.length&&this.props.chat.chatmsg[0] !== this.props.user._id) {
-            this.props.getMsgList()
-            this.props.recvMsg()
-        }    
-        setTimeout(() => {
-            window.dispatchEvent(new Event('resize'))
-        }, 0)
-        // socket.on('receMsg', (data) => {
-        //     this.setState({
-        //         msg: [...this.state.msg, data]
-        //     })
-        //     console.log(data);
-        // })
-
+    if (!this.props.chat.chatmsg.length && this.props.chat.chatmsg[0] !== this.props.user._id) {
+      this.props.getMsgList()
+      this.props.recvMsg()
     }
-    
-    componentWillUnmount() {
-        console.log('unmount')
-        //  新增方法
-        // console.log(this.props);
-        var toId = this.props.match.params.id
-        this.props.readmsg(toId)
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 0)
+    // socket.on('receMsg', (data) => {
+    //     this.setState({
+    //         msg: [...this.state.msg, data]
+    //     })
+    //     console.log(data);
+    // })
+  }
+
+  componentWillUnmount () {
+    console.log('unmount')
+    //  新增方法
+    // console.log(this.props);
+    var toId = this.props.match.params.id
+    this.props.readmsg(toId)
+  }
+
+  handleSubmit () {
+    // 点击发送按钮之后   调用socket.io的emit方法  向后端进行推送
+    // socket.emit('sendmsg', {
+    //     text: this.state.text,
+    //     talkself: this.props.match.params.me,
+    //     talkObject: this.props.match.params.user,
+    // })
+    // this.setState({text: ''}
+    const from = this.props.user._id
+    const to = this.props.match.params.id
+    const msg = this.state.text
+    this.props.sendMsg({from, to, msg})
+    this.setState({text: '', showEmoji: false})
+  }
+
+  // 修复跑马灯
+  Fixcarousel () {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 0)
+  }
+
+  render () {
+    var emoji = '😀 😂 🤣 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓'
+      .split(' ')
+      .filter(v => v)
+      .map(v => ({text: v}))
+    // console.log(this.state);
+    // console.log(this.props);
+
+    // const meId = window.localStorage.getItem('id');
+    const otherSide = this.props.match.params.id
+    const Item = List.Item
+    const users = this.props.chat.users
+    // console.log(this.props);
+    // console.log(users);
+    if (!users[otherSide]) {
+      return null
     }
-    
+    const ChatId = getChatId(this.props.user._id, otherSide)
+    console.log(ChatId)
+    console.log(this.props.chat.chatmsg)
+    const chatMsg = this.props.chat.chatmsg.filter((v) => v.chatId === ChatId)
+    const showEmoji = this.state.showEmoji
+    return (
+          <div id='chat-page'>
+        <NavBar mode='dark'
+          icon={<Icon type='left' />}
+          onLeftClick={() => {
+            this.props.history.goBack()
+          }}
+          className='fixd-header'
+        >{this.props.match.params.user}</NavBar>
+        <div style={{marginTop: 45}} />
+        <QueueAnim delay={100}>
+        {chatMsg.map(v => {
+          const avatar = require(`../img/${users[v.from].avatar}.png`)
+          return v.from === otherSide ? (
+          //   对方发来的
+            <List key={v._id}>
+              {/* <p key={v.text} */}
+                        {/* className={this.props.match.params.me === v.talkself ? 'self' : 'other'}>{v.text}</p> */}
 
-    handleSubmit() {
-        // 点击发送按钮之后   调用socket.io的emit方法  向后端进行推送
-        // socket.emit('sendmsg', {
-        //     text: this.state.text,
-        //     talkself: this.props.match.params.me,
-        //     talkObject: this.props.match.params.user,
-        // })
-        // this.setState({text: ''})
-        // console.log(this.props);
-        console.log('majunchang');
+                        <Item
+                thumb={avatar}
+              >
+                {v.content}
+              </Item>
+                      </List>
 
-        const from = this.props.user._id;
-        const to = this.props.match.params.id;
-        const msg = this.state.text;
-        this.props.sendMsg({from, to, msg})
-        this.setState({text: '', showEmoji: false})
-
-    }
-
-    // 修复跑马灯
-    Fixcarousel() {
-        setTimeout(() => {
-            window.dispatchEvent(new Event('resize'))
-        }, 0)
-    }
-
-    render() {
-        var emoji = '😀 😂 🤣 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓 😎 🤓 🤩 😀 😂 🤣 😎 🤓 🤗 🤬 😓'
-            .split(' ')
-            .filter((v => v))
-            .map(v => ({text: v}))
-        // console.log(this.state);
-        // console.log(this.props);
-
-
-        // const meId = window.localStorage.getItem('id');
-        const otherSide = this.props.match.params.id;
-        const Item = List.Item;
-        const users = this.props.chat.users;
-        // console.log(this.props);
-        // console.log(users);
-        if (!users[otherSide]) {
-            return null;
-        }
-        const ChatId = getChatId(this.props.user._id, otherSide);
-        console.log(ChatId)
-        console.log(this.props.chat.chatmsg)
-        const chatMsg = this.props.chat.chatmsg.filter((v) => v.chatId === ChatId);
-        const showEmoji = this.state.showEmoji;
-        return (
-            <div id='chat-page'>
-                <NavBar mode="dark"
-                        icon={<Icon type='left'></Icon>}
-                        onLeftClick={() => {
-                            this.props.history.goBack()
-                        }}
-                        className='fixd-header'
-                >{this.props.match.params.user}</NavBar>
-                <div style={{marginTop: 45}}></div>
-                {chatMsg.map(v => {
-                    const avatar = require(`../img/${users[v.from].avatar}.png`);
-                    return v.from === otherSide ? (
-                        //   对方发来的
-                        <List key={v._id}>
-                            {/*<p key={v.text}*/}
-                            {/*className={this.props.match.params.me === v.talkself ? 'self' : 'other'}>{v.text}</p>*/}
-
-                            <Item
-                                thumb={avatar}
-                            >
-                                {v.content}
-                            </Item>
-                        </List>
-
-                    ) : (
-                        // 我发来的
-                        <List key={v._id}>
-                            <Item
-                                extra={<img src={avatar}/>}
-                                className='chat-me'
-                            >
-                                {v.content}
-                            </Item>
-                        </List>
-                    )
-                })}
-                <div className='stick-footer'>
-                    <List>
-                        <InputItem
-                            placeholder='请输入'
-                            value={this.state.text}
-                            onChange={v => {
-                                this.setState({
-                                    text: v
-                                })
-                            }}
-                            extra={
-                                <div className='emojiBox'>
-                                    <span style={{marginRight: 15}}
-                                          onClick={() => {
-                                              this.setState({showEmoji: !this.state.showEmoji})
-                                              this.Fixcarousel();
-                                          }}
-                                    >
+          ) : (
+          // 我发来的
+            <List key={v._id}>
+              <Item
+                extra={<img src={avatar} />}
+                className='chat-me'
+              >
+                {v.content}
+              </Item>
+            </List>
+          )
+        })}
+        </QueueAnim>
+        <div className='stick-footer'>
+          <List>
+                    <InputItem
+              placeholder='请输入'
+              value={this.state.text}
+              onChange={v => {
+                this.setState({
+                  text: v
+                })
+              }}
+              extra={
+                <div className='emojiBox'>
+                  <span style={{marginRight: 15}}
+                    onClick={() => {
+                      this.setState({showEmoji: !this.state.showEmoji})
+                      this.Fixcarousel()
+                    }}
+                  >
                                        😉
-                                    </span>
+                  </span>
 
-                                    <span onClick={() => this.handleSubmit()}>发送</span>
-                                </div>
-
-                            }
-                        >
-                        </InputItem>
-
-                    </List>
-                    {showEmoji ? <Grid
-                        data={emoji}
-                        columnNum={9}
-                        carouselMaxRow={4}
-                        isCarousel={true}
-                        onClick={el => {
-                            // console.log(el);
-                            this.setState({
-                                text: this.state.text + el.text
-                            })
-                        }}
-                    > </Grid> : null}
+                  <span onClick={() => this.handleSubmit()}>发送</span>
                 </div>
-            </div>
-        )
-    }
+
+              }
+            />
+
+                  </List>
+                {showEmoji ? <Grid
+            data={emoji}
+            columnNum={9}
+            carouselMaxRow={4}
+            isCarousel
+            onClick={el => {
+              // console.log(el);
+              this.setState({
+                text: this.state.text + el.text
+              })
+            }}
+          /> : null}
+              </div>
+      </div>
+    )
+  }
 }
 
 export default Chat
