@@ -28,30 +28,50 @@ const store = createStore(reducers, compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 ))
 
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      hasError: false
+    }
+  }
+  //  捕捉页面错误 类似于try  catch
+  componentDidCatch (err, info) {
+    console.log(err)
+    this.setState({
+      hasError: true
+    })
+  }
+  render () {
+    return (
+      (
+        this.state.hasError
+          ? <h2>喔喔，页面崩溃了</h2>
+          : <div>
+            {/* Switch的作用  只渲染命中的第一个路由 */}
+            <AuthRoute />
+            <Switch>
+              {/* router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
+              <Route path='/login' component={Login} exact />
+              <Route path='/register' component={Register} />
+              <Route path='/bossinfo' component={BossInfo} />
+              <Route path='/geniusInfo' component={GeniusInfo} />
+              <Route path='/chat/:id' component={Chat} />
+              {/* <Route path='/boss' component={Boss}></Route> */}
+              {/* <Route path='/genius' component={Genius}></Route> */}
+              {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}
+              <Route component={Dashboard} />
+            </Switch>
+          </div>
+      ))
+  }
+}
+
 ReactDOM.render(
-  (
-    <Provider store={store}>
-      <BrowserRouter>
-        <div>
-          {/* Switch的作用  只渲染命中的第一个路由 */}
-          <AuthRoute />
-          <Switch>
-            {/* router路由中  是采用的正则匹配的模式  /erying 会包含/的内容  使用严格模式以后exact  会解决这中问题 */}
-            <Route path='/login' component={Login} exact />
-            <Route path='/register' component={Register} />
-            <Route path='/bossinfo' component={BossInfo} />
-            <Route path='/geniusInfo' component={GeniusInfo} />
-            <Route path='/chat/:id' component={Chat} />
-            {/* <Route path='/boss' component={Boss}></Route> */}
-            {/* <Route path='/genius' component={Genius}></Route> */}
-            {/* 在这个项目中  很多页面 会共享一个头部和底部  我们使用dashboard来代替   */}
-            <Route component={Dashboard} />
-          </Switch>
-
-        </div>
-
-      </BrowserRouter>
-    </Provider>
+  (<Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
   ),
-  document.getElementById('root')
-)
+  document.getElementById('root'))

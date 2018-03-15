@@ -7,5 +7,4 @@ import {chatuser} from './redux/chatuser.Redux'
 //  聊天所需数据
 import {chat} from './redux/chat'
 
-
 export default combineReducers({user, chatuser, chat})
