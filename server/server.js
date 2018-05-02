@@ -32,13 +32,13 @@ io.on('connection', (socket) => {
   })
 })
 //  设置静态资源的访问路径
-app.use('/',express.static(path.resolve('build')))
+app.use('/', express.static(path.resolve('build')))
 //  设置中间件
-app.use(function (req,res,next) {
-    if(req.url.startsWith('/user')||req.url.startsWith('/static')){
-      return next()
-    }
-    return res.sendFile(path.resolve('build/index.html'))
+app.use(function (req, res, next) {
+  if (req.url.startsWith('/user') || req.url.startsWith('/static')) {
+    return next()
+  }
+  return res.sendFile(path.resolve('build/index.html'))
 })
 app.use(cookieParser())
 app.use(bodyParser.json())

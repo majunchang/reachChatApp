@@ -19,10 +19,10 @@ import Login from '../../pages/login/login'
 //     return <h2>个人中心页面</h2>
 // }
 
-// @connect(
-//     state => state,
-//     {getMsgList, recvMsg}
-// )
+@connect(
+    state => state,
+    {getMsgList, recvMsg}
+)
 
 class Dashboard extends React.Component {
   componentDidMount () {
@@ -68,7 +68,6 @@ class Dashboard extends React.Component {
       }
     ]
     const page = navList.find(v => v.path === pathname)
-    console.log(pathname)
     return page ? (
       pathname === '/' ? <Route redirect='/login' component={Login} />
         : <div>
@@ -82,7 +81,7 @@ class Dashboard extends React.Component {
           </div>
           <FooterNavLink data={navList} />
         </div>
-    ):<Redirect to='/msg' />
+    ) : <Redirect to='/msg' />
   }
 }
 

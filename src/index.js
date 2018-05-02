@@ -43,6 +43,8 @@ class App extends React.Component {
     })
   }
   render () {
+    console.log('又进入了主页的渲染')
+    console.log(this.props)
     return (
       (
         this.state.hasError

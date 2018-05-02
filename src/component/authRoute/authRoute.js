@@ -13,6 +13,7 @@ import {connect} from 'react-redux'
 
 class AuthRoute extends React.Component {
     componentDidMount() {
+        console.log('要发送检测请求le')
         axios.get('/user/info')
             .then((res) => {
                 if (res.data.code === 0) {

@@ -21,10 +21,12 @@ class Msg extends React.Component {
     render() {
 
         const msgGroup = {}
+        console.log(this.props);
         this.props.chat.chatmsg.forEach(v => {
             msgGroup[v.chatId] = msgGroup[v.chatId] || []
             msgGroup[v.chatId].push(v)
         })
+        console.log(msgGroup);
         //  取出对象中 所有的value项
         const chatList = Object.values(msgGroup).sort((a, b) => {
             var aLast = this.getLast(a)

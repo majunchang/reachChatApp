@@ -20,11 +20,7 @@ class FooterNavLink extends React.Component {
         const navList = this.props.data.filter((v) => {
             return !v.hide
         })
-        // console.log(navList);
         const {pathname} = this.props.location;
-        // console.log(pathname);
-        // console.log(navList);
-        // console.log(this.props);
         return (
             <TabBar>
                 {navList.map(v =>
