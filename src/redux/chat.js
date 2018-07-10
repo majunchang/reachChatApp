@@ -1,6 +1,5 @@
 import io from 'socket.io-client'
 import axios from 'axios'
-import { stat } from 'fs'
 
 const socket = io('ws://localhost:9000')
 

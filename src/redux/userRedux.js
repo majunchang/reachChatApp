@@ -81,7 +81,6 @@ export function login ({user, pwd}) {
   return dispatch => {
     axios.post('/user/login', {user, pwd})
       .then((res) => {
-        console.log(res)
         if (res.data.code === 0) {
           dispatch(authSuccess(res.data.data))
           window.localStorage.setItem('id', res.data.data._id)
@@ -100,7 +99,6 @@ export function register ({user, pwd, repeatPwd, type}) {
     return errorMsg('密码和确认密码不同')
   }
 
-  console.log('进入了注册函数 ')
   return dispatch => {
     axios.post('/user/register', {user, type, pwd})
       .then((res) => {

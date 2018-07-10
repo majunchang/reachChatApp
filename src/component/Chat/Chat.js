@@ -4,7 +4,7 @@ import {List, InputItem, NavBar, Icon, Grid} from 'antd-mobile'
 import {connect} from 'react-redux'
 import {sendMsg, getMsgList, recvMsg, readmsg} from '../../redux/chat'
 import {getChatId} from '../../utils'
-import QueueAnim from 'rc-queue-anim'
+// import QueueAnim from 'rc-queue-anim'
 // const socket = io('ws://localhost:9000')
 
 @connect(
@@ -78,23 +78,18 @@ class Chat extends React.Component {
       .split(' ')
       .filter(v => v)
       .map(v => ({text: v}))
-    // console.log(this.state);
-    // console.log(this.props);
-
-    // const meId = window.localStorage.getItem('id');
+  
     const otherSide = this.props.match.params.id
     const Item = List.Item
     const users = this.props.chat.users
-    // console.log(this.props);
-    // console.log(users);
+   
     if (!users[otherSide]) {
       return null
     }
     const ChatId = getChatId(this.props.user._id, otherSide)
-    console.log(ChatId)
-    console.log(this.props.chat.chatmsg)
     const chatMsg = this.props.chat.chatmsg.filter((v) => v.chatId === ChatId)
     const showEmoji = this.state.showEmoji
+    // console.log(chatMsg);
     return (
           <div id='chat-page'>
         <NavBar mode='dark'

@@ -8,7 +8,7 @@ import HocForm from '../../component/hoc-form/hoc-form'
 
 // 高阶组件 思想
 // function hello() {
-//     console.log('我喜欢慕课网');
+//     console.log('我喜欢react');
 // }
 //
 // function WrapperHello(fn) {
@@ -39,7 +39,7 @@ import HocForm from '../../component/hoc-form/hoc-form'
 //         }
 //     }
 //     return WrapComp
-// }
+// }98
 //  反向继承
 // function wrapperHello(Comp) {
 //     class WrapComp extends Comp{
@@ -74,6 +74,7 @@ class Login extends React.Component {
 
     register() {
         console.log('点击了注册按钮')
+        console.log(this.props);
         this.props.history.push('/register');
     }
 
