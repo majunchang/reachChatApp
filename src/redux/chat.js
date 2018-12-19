@@ -25,10 +25,10 @@ export function chat (state = initState, action) {
       }
     case msgRecv:
       const n = action.payload.to === action.userId ? 1 : 0
-      return {...state, chatmsg: [...state.chatmsg, action.payload], unread: state.unread + n}
+      return { ...state, chatmsg: [...state.chatmsg, action.payload], unread: state.unread + n }
     case msgRead:
-      const {to, num} = action.payload
-      return {...state, chatmsg: state.chatmsg.map(v => ({...v, read: v.from === to ? true : v.read})), unread: state.unread - num}
+      const { to, num } = action.payload
+      return { ...state, chatmsg: state.chatmsg.map(v => ({ ...v, read: v.from === to ? true : v.read })), unread: state.unread - num }
     default:
       return state
   }
@@ -36,7 +36,7 @@ export function chat (state = initState, action) {
 
 // actions
 function getmaglist (msgs, users, userId) {
-  return {type: msgList, payload: {msgs, users, userId}}
+  return { type: msgList, payload: { msgs, users, userId } }
 }
 
 // 外部调用函数
@@ -54,16 +54,16 @@ export function getMsgList () {
 }
 
 function msgRecvfn (msg, userId) {
-  return {type: msgRecv, payload: msg, userId}
+  return { type: msgRecv, payload: msg, userId }
 }
 
 function msgReadactionsC (from, to, num) {
-  return {type: msgRead, payload: {from, to, num}}
+  return { type: msgRead, payload: { from, to, num } }
 }
 
 export function readmsg (to) {
   return (dispatch, getState) => {
-    axios.post('/user/readmsg', {to})
+    axios.post('/user/readmsg', { to })
       .then(res => {
         var from = getState().user._id
         if (res.data.code === 0) {
@@ -97,8 +97,8 @@ export function recvMsg (msg) {
   }
 }
 
-export function sendMsg ({from, to, msg}) {
+export function sendMsg ({ from, to, msg }) {
   return dispatch => {
-    socket.emit('sendmsg', {from, to, msg})
+    socket.emit('sendmsg', { from, to, msg })
   }
 }

@@ -1,5 +1,7 @@
 import axios from 'axios'
-import {getRedirectPath} from '../utils'
+import {
+  getRedirectPath
+} from '../utils'
 
 const register_success = 'register_success'
 const login_success = 'login_success'
@@ -17,20 +19,39 @@ const initState = {
 }
 
 // reducer
-export function user (state = initState, action) {
+export function user(state = initState, action) {
   switch (action.type) {
     case register_success:
-      return {...state, msg: '', isAuth: true, redirectTo: getRedirectPath(action.payload), ...action.payload}
+      return { ...state,
+        msg: '',
+        isAuth: true,
+        redirectTo: getRedirectPath(action.payload),
+        ...action.payload
+      }
     case error_msg:
-      return {...state, isAuth: false, msg: action.msg}
+      return { ...state,
+        isAuth: false,
+        msg: action.msg
+      }
     case auth_success:
-      return {...state, redirectTo: getRedirectPath(action.payload), ...action.payload}
+      return { ...state,
+        redirectTo: getRedirectPath(action.payload),
+        ...action.payload
+      }
     case login_success:
-      return {...state, isAuth: true, redirectTo: getRedirectPath(action), ...action.payload}
+      return { ...state,
+        isAuth: true,
+        redirectTo: getRedirectPath(action),
+        ...action.payload
+      }
     case load_data:
-      return {...state, ...action.payload}
+      return { ...state,
+        ...action.payload
+      }
     case log_out:
-      return {...initState, redirectTo: '/login'}
+      return { ...initState,
+        redirectTo: '/login'
+      }
     default:
       return state
   }
@@ -41,27 +62,38 @@ export function user (state = initState, action) {
 //     return {type: register_success, payload: obj}
 // }
 
-function errorMsg (msg) {
-  return {msg, type: error_msg}
+function errorMsg(msg) {
+  return {
+    msg,
+    type: error_msg
+  }
 }
 
 // function loginSuccess(obj) {
 //     return {type: login_success, payload: obj}
 // }
 
-function authSuccess (obj) {
-  return {type: auth_success, payload: obj}
+function authSuccess(obj) {
+  return {
+    type: auth_success,
+    payload: obj
+  }
 }
 
-export function loadData (userInfo) {
-  return {type: load_data, payload: userInfo}
+export function loadData(userInfo) {
+  return {
+    type: load_data,
+    payload: userInfo
+  }
 }
 
-export function logoutSubmit () {
-  return {type: log_out}
+export function logoutSubmit() {
+  return {
+    type: log_out
+  }
 }
 
-export function saveInfo (data) {
+export function saveInfo(data) {
   return dispatch => {
     axios.post('user/saveInfo', data)
       .then((res) => {
@@ -74,12 +106,18 @@ export function saveInfo (data) {
   }
 }
 
-export function login ({user, pwd}) {
+export function login({
+  user,
+  pwd
+}) {
   if (!user || !pwd) {
     return errorMsg('用户名密码必须输入')
   }
   return dispatch => {
-    axios.post('/user/login', {user, pwd})
+    axios.post('/user/login', {
+        user,
+        pwd
+      })
       .then((res) => {
         if (res.data.code === 0) {
           dispatch(authSuccess(res.data.data))
@@ -91,7 +129,12 @@ export function login ({user, pwd}) {
   }
 }
 
-export function register ({user, pwd, repeatPwd, type}) {
+export function register({
+  user,
+  pwd,
+  repeatPwd,
+  type
+}) {
   if (!user || !pwd) {
     return errorMsg('用户名密码必须输入')
   }
@@ -100,7 +143,11 @@ export function register ({user, pwd, repeatPwd, type}) {
   }
 
   return dispatch => {
-    axios.post('/user/register', {user, type, pwd})
+    axios.post('/user/register', {
+        user,
+        type,
+        pwd
+      })
       .then((res) => {
         if (res.data.code === 0) {
           dispatch(authSuccess(res.data.data))

@@ -1,12 +1,12 @@
 import React from 'react'
-import {NavBar} from 'antd-mobile'
-import {connect} from 'react-redux'
-import {Switch, Route, Redirect} from 'react-router-dom'
+import { NavBar } from 'antd-mobile'
+import { connect } from 'react-redux'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import FooterNavLink from '../FooterNavLink/FooterNavLink'
-import Boss from '../../component/Boss/Boss'
-import Genius from '../../component/Genius/Genius'
-import User from '../../component/User/User'
-import {getMsgList, recvMsg} from '../../redux/chat'
+import Boss from '../Boss/Boss'
+import Genius from '../Genius/Genius'
+import User from '../User/User'
+import { getMsgList, recvMsg } from '../../redux/chat'
 import Msg from '../Msg/Msg'
 import Login from '../../pages/login/login'
 
@@ -20,20 +20,20 @@ import Login from '../../pages/login/login'
 // }
 
 @connect(
-    state => state,
-    {getMsgList, recvMsg}
+  state => state,
+  { getMsgList, recvMsg }
 )
 
 class Dashboard extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     if (!this.props.chat.chatmsg.length) {
       this.props.getMsgList()
       this.props.recvMsg()
     }
   }
 
-  render () {
-    const {pathname} = this.props.location
+  render() {
+    const { pathname } = this.props.location
     const user = this.props.user
     const navList = [
       {
@@ -68,20 +68,24 @@ class Dashboard extends React.Component {
       }
     ]
     const page = navList.find(v => v.path === pathname)
-    return page ? (
-      pathname === '/' ? <Route redirect='/login' component={Login} />
-        : <div>
-          <NavBar mode='dark' className='fixd-header'>{navList.find(v => v.path === pathname).title}</NavBar>
-          <div style={{marginTop: 45}}>
-            <Switch>
-              {navList.map(v =>
-                <Route key={v.path} path={v.path} component={v.component} />
-              )}
-            </Switch>
+    return page
+      ? (
+        pathname === '/' ? <Route redirect='/login' component={Login} />
+          : <div>
+            <NavBar mode='dark' className='fixd-header' > {navList.find(v => v.path === pathname).title} </NavBar>
+            <div style={{ marginTop: 45 }
+            }>
+              <Switch>
+                {
+                  navList.map(v =>
+                    <Route key={v.path} path={v.path} component={v.component} />
+                  )
+                }
+              </Switch>
+            </div>
+            <FooterNavLink data={navList} />
           </div>
-          <FooterNavLink data={navList} />
-        </div>
-    ) : <Redirect to='/msg' />
+      ) : <Redirect to='/msg' />
   }
 }
 

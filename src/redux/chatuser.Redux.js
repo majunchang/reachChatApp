@@ -5,20 +5,25 @@ const initState = {
   userlist: []
 }
 
-export function chatuser (state = initState, action) {
+export function chatuser(state = initState, action) {
   switch (action.type) {
     case user_list:
-      return {...state, userlist: action.payload}
+      return { ...state,
+        userlist: action.payload
+      }
     default:
       return state
   }
 }
 
-function userList (data) {
-  return {type: user_list, payload: data}
+function userList(data) {
+  return {
+    type: user_list,
+    payload: data
+  }
 }
 
-export function getUserList (type) {
+export function getUserList(type) {
   return dispatch => {
     axios.get(`/user/List?type=${type}`)
       .then((res) => {
